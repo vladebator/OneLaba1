@@ -1,0 +1,218 @@
+/*
+Вариант №13 (Лисовой Владислав АТ-201)
+Вывести данные об авиарейсе с максимальной
+длительностью полёта.
+/*
+
+package com.onpy;
+
+import java.time.Duration;
+import java.time.LocalTime;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Введите количество авиарейсов: ");
+        int inCountFlight = scan.nextInt();
+
+        Flight[] flight = new Flight[inCountFlight];
+
+        long hours = 0;
+        long minutes = 0;
+        long seconds = 0;
+        for (int i = 0; i < flight.length; i++) {
+            flight[i] = new Flight();
+            scan.nextLine();
+            System.out.print("Введите номер рейса: ");
+            flight[i].setNumberFlight(scan.nextLine().trim());
+            System.out.print("Введите дату и время вылета самолёта (Год/Месяц/День/Час/Минуты): ");
+            flight[i].setYear(scan.nextInt());
+            flight[i].setMonth(scan.nextInt());
+            flight[i].setDay(scan.nextInt());
+            flight[i].setHours(scan.nextInt());
+            flight[i].setMinutes(scan.nextInt());
+            flight[i].DepartureTime();
+            System.out.print("Введите дату и время прилёта (Год/Месяц/День/Час/Минуты): ");
+            flight[i].setYear(scan.nextInt());
+            flight[i].setMonth(scan.nextInt());
+            flight[i].setDay(scan.nextInt());
+            flight[i].setHours(scan.nextInt());
+            flight[i].setMinutes(scan.nextInt());
+            flight[i].ArrivalTime();
+            scan.nextLine();
+            System.out.print("Введите марку самолёта: ");
+            flight[i].setAircraftBrand(scan.nextLine());
+            System.out.print("Введите расстояние: ");
+            flight[i].setDistance(scan.nextInt());
+
+            for (int j = 0; j < flight.length; j++) {
+                Duration duration = Duration.between(flight[i].arrivalTime, flight[i].departureTime);
+                seconds = Math.abs(duration.getSeconds());
+                hours = seconds / 3600;
+                seconds -= (hours * 3600);
+                minutes = seconds / 60;
+                seconds -= (minutes * 60);
+                //flight[i].OutputInfo();
+            }
+        }
+        System.out.print("\nАвиарейс с максимальной длительностью полёта: ");
+        System.out.println(hours + " hours " + minutes + " minutes " + seconds + " seconds");
+    }
+}
+
+// Новый класс
+
+package com.onpy;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
+import java.util.Scanner;
+
+public class Flight {
+    String direction;
+    String numberFlight;
+    int year;
+    int month;
+    int day;
+    int hours;
+    int minutes;
+    LocalDateTime departureTime;
+    LocalDateTime arrivalTime;
+    LocalDateTime duration;
+    String aircraftBrand;
+    float distance;
+
+    Scanner scan = new Scanner(System.in);
+
+    public void setDirection(String direction) {
+        this.direction = this.direction;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    int currentYear = 2021;
+
+    public void setNumberFlight(String numberFlight) {
+        this.numberFlight = numberFlight;
+    }
+
+    public String getNumberFlight() {
+        this.numberFlight = numberFlight;
+        return numberFlight;
+    }
+
+    public void setYear(int year) {
+        int trueYear = year;
+        if (year > currentYear)
+        {
+            System.out.println("Некорректное значение года. Кажется, что вы ввели год который ещё не наступил:)");
+            System.out.print("Введите год: ");
+            trueYear = scan.nextInt();
+        }
+        else if (year< 0) {
+            System.out.println("Некорректное значение года. Кажется, что вы ввели отрицательное значение:)");
+            System.out.print("Введите год: ");
+            trueYear = scan.nextInt();
+        }
+
+        this.year = trueYear;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setDay(int day){
+        int trueDay = day;
+        if(trueDay < 0 || trueDay > 31) {
+            System.out.print("Ошибка ввода. Попробуйте снова: ");
+            trueDay = scan.nextInt();
+        }
+
+        this.day = trueDay;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setMonth(int month){
+        int trueMonth = month;
+        if(trueMonth < 0 || trueMonth > 12) {
+            System.out.print("Ошибка ввода. Попробуйте снова: ");
+            trueMonth = scan.nextInt();
+        }
+
+        this.month = trueMonth;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setHours(int hours) {
+        int trueHours = hours;
+        if(trueHours < 0 || trueHours > 24) {
+            System.out.print("Ошибка ввода. Попробуйте снова: ");
+            trueHours = scan.nextInt();
+        }
+        this.hours = trueHours;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+    public void setMinutes(int minutes) {
+        int trueMinutes = minutes;
+        if(trueMinutes < 0 || trueMinutes > 60) {
+            System.out.print("Ошибка ввода. Попробуйте снова: ");
+            trueMinutes = scan.nextInt();
+        }
+        this.minutes = trueMinutes;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public void setAircraftBrand(String aircraftBrand) {
+        this.aircraftBrand = aircraftBrand;
+    }
+
+    public String getAircraftBrand() {
+        return aircraftBrand;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public int getDistance() {
+        return (int) distance;
+    }
+
+    public void DepartureTime()
+    {
+        departureTime = LocalDateTime.of(year, month, day, hours, minutes);
+
+    }
+
+    public void ArrivalTime()
+    {
+        arrivalTime = LocalDateTime.of(year, month, day, hours, minutes);
+    }
+    public void OutputInfo() {
+        System.out.println("\n");
+        System.out.println("Номер авиарейса: " + numberFlight);
+        System.out.println("Дата и время вылета: " + departureTime);
+        System.out.println("Дата и время прилёта: " + arrivalTime);
+        System.out.println("Марка самолёта: " + aircraftBrand);
+        System.out.println("Расстояние: " + distance);
+        System.out.println();
+    }
+}
